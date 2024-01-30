@@ -11,14 +11,16 @@ csv()
     const tableHeaderStrings = tableHeader.filter(item => typeof item === 'string' && isNaN(+item)).sort((a, b) => b < a ? -1 : 1);
     const tableHeaderSorted = [...tableHeaderStrings, ...tableHeaderNumbers];
     const sortedJson = [];
+    sortedJson.push(tableHeaderSorted);
 
     for (const row of result) {
-      const map = new Map();
-      const sortedRow = tableHeaderSorted.reduce((obj, header) => {
-        obj[String(header)] = row[header];
-        return obj;
-      }, map);
-      sortedJson.push(sortedRow);
+      const tempRow = [];
+
+      for (const value of tableHeaderSorted) {
+        tempRow.push(row[value]);
+      }
+
+      sortedJson.push(tempRow);
     }
 
     console.log(asTable(sortedJson));
